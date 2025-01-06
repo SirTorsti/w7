@@ -2,6 +2,7 @@ import {Request, Response, Router} from "express"
 import bcrypt from 'bcrypt'
 import {body, Result, ValidationError, validationResult} from 'express-validator'
 import jwt, { JwtPayload } from 'jsonwebtoken'
+import { validateToken } from "../middleware/validateToken"
 
 const router: Router = Router()
 const users: {email: string; password: string}[] = []
@@ -32,7 +33,7 @@ router.post("/api/user/register",
 
             res.status(200).json({"email": req.body.email, "password": hash})
         
-    } catch (error: any) {
+    } catch (error: any) { 
         console.error(`Error while registering ${error}`)
         res.status(500).json({message: 'Internal server error'})
     }
@@ -73,6 +74,15 @@ router.get("/api/user/list", async (req: Request, res: Response) => {
         res.status(200).json(users)
     } catch (error: any) {
         console.log(`Error whil fetching users ${error}`)
+        res.status(500).json({error: "Internal Server Error"})
+    }
+})
+
+router.get("/api/secret", validateToken, async (req: Request, res: Response) => {
+    try {
+        res.status(200).json({ message: "This is a protected secure route!" })
+    } catch (error: any) {
+        console.log(`Error while fetching users ${error}`)
         res.status(500).json({error: "Internal Server Error"})
     }
 })
