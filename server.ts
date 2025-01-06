@@ -10,11 +10,6 @@ dotenv.config()
 const app: Express = express()
 const port: number = parseInt(process.env.PORT as string) || 8001
 
-const mongoDB: string = "mongodb://localhost:27017/app"
-mongoose.connect(mongoDB)
-mongoose.Promise = Promise
-const db: Connection = mongoose.connection
-
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 app.use(morgan("dev"))

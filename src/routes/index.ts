@@ -5,6 +5,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken'
 import { User, IUser } from '../models/User'
 
 const router: Router = Router()
+const users: {email: string; password: string}[] = []
 
 router.post("/api/user/register",
     body("email").isEmail().escape(),
@@ -17,8 +18,7 @@ router.post("/api/user/register",
             return
         }
         try {
-            const existingUser: IUser | null = await User.findOne({email: req.body.email})
-            console.log(existingUser)
+            const existingUser = users.find(user => user.email === req.body.email)
             if (existingUser) {
                 res.status(403).json({email: "email already in use"})
                 return
@@ -43,7 +43,6 @@ router.post("/api/user/register",
 
 router.get("/api/user/list", async (req: Request, res: Response) => {
     try {
-        const users: IUser[] = await User.find()
         res.status(200).json(users)
     } catch (error: any) {
         console.log(`Error whil fetching users ${error}`)
