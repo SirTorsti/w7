@@ -80,7 +80,7 @@ router.get("/api/user/list", async (req: Request, res: Response) => {
 
 router.get("/api/private", validateToken, async (req: Request, res: Response) => {
     try {
-        res.status(200).json({ message: "This is a protected secure route!" })
+        res.status(200).json({ message: "This is protected secure route!" })
     } catch (error: any) {
         console.log(`Error while fetching users ${error}`)
         res.status(500).json({error: "Internal Server Error"})

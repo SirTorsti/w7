@@ -21,6 +21,6 @@ export const validateToken = (req: CustomRequest, res: Response, next: NextFunct
         req.user = verified
         next()
     } catch (error: any) {
-        res.status(400).json({ message: "Access denied, invalid token" });
+        res.status(401).json({ message: "Access denied, invalid token" });
     }
 };
