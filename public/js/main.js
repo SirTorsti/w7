@@ -5,8 +5,8 @@ const blääh = async () => {
     if(!token) {
         window.location.href = "http://localhost:3000/login.html"
     } else {
-        document.getElementById("logout").style.display = "block";
-        
+        document.getElementById("logout").classList.remove('hidden');
+
         const response = await fetch ("/api/private", {
             method: "GET",
             headers: {
