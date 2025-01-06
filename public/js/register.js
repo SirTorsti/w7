@@ -20,7 +20,14 @@ const fetchData = async (event) => {
             },
             body: JSON.stringify(formData)
         })
+        if (!response.ok) {
+            document.getElementById("error").innerText = "Error while trying to register"
+        } else {
+            window.location.href = "localhost:3000/login.html"
+        }
     } catch (error) {
         console.log(`Error while trying to register: ${error.message}`)
     }
 }
+
+initializeRegister()
