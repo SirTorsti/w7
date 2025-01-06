@@ -17,7 +17,7 @@ router.post("/api/user/register",
             return
         }
         try {
-            const existingUser = users.find(user => user.email === req.body)
+            const existingUser = users.find(user => user.email === req.body.email)
             console.log(existingUser)
             if (existingUser) {
                 res.status(403).json({email: "email already in use"})
@@ -28,6 +28,7 @@ router.post("/api/user/register",
             const hash: string = bcrypt.hashSync(req.body.password, salt)
 
             const newUser = { email: req.body.email, password: hash}
+            users.push(newUser)
 
             res.status(200).json({"email": req.body.email, "password": hash})
         
