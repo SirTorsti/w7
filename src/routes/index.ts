@@ -7,8 +7,8 @@ import { User, IUser } from '../models/User'
 const router: Router = Router()
 
 router.post("/api/user/register",
-    body("email").escape(),
-    body("password").isLength({min: 5}),
+    body("email").isEmail().escape(),
+    body("password"),
     async (req: Request, res: Response) => {
         const errors: Result<ValidationError> = validationResult(req)
         if (!errors.isEmpty()) {
