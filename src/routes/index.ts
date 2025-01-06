@@ -2,7 +2,6 @@ import {Request, Response, Router} from "express"
 import bcrypt from 'bcrypt'
 import {body, Result, ValidationError, validationResult} from 'express-validator'
 import jwt, { JwtPayload } from 'jsonwebtoken'
-import { User, IUser } from '../models/User'
 
 const router: Router = Router()
 const users: {email: string; password: string}[] = []
@@ -18,7 +17,8 @@ router.post("/api/user/register",
             return
         }
         try {
-            const existingUser = users.find(user => user.email === req.body.email)
+            const existingUser = users.find(user => user.email === req.body)
+            console.log(existingUser)
             if (existingUser) {
                 res.status(403).json({email: "email already in use"})
                 return
@@ -27,10 +27,7 @@ router.post("/api/user/register",
             const salt: string = bcrypt.genSaltSync(10)
             const hash: string = bcrypt.hashSync(req.body.password, salt)
 
-            await User.create({
-                email: req.body.email,
-                password: hash
-            })
+            const newUser = { email: req.body.email, password: hash}
 
             res.status(200).json({"email": req.body.email, "password": hash})
         
